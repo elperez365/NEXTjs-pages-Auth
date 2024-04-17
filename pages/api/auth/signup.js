@@ -18,16 +18,10 @@ export default async function handler(req, res) {
           res.status(422).json({ message: "Invalid input." });
           return;
         }
+
         const client = await connectToDatabase();
         const db = client.db();
         const usersCollection = db.collection("users");
-        const existingUser = await usersCollection.findOne({ email: email });
-
-        if (existingUser) {
-          res.status(422).json({ message: "User exists already!" });
-          client.close();
-          return;
-        }
 
         const hashedPassword = await hashPassword(password);
 
@@ -37,7 +31,6 @@ export default async function handler(req, res) {
         });
 
         res.status(201).json({ message: "Created user!" });
-        client.close();
       } catch (error) {
         res.status(500).json({ message: "Creating user failed!" });
       }
