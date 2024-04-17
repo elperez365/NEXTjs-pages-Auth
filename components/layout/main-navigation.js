@@ -11,10 +11,6 @@ function MainNavigation() {
     await signOut();
   };
 
-  console.log(session);
-
-  console.log("status" + " " + status);
-
   return (
     <header className={classes.header}>
       {status === "loading" && <p>Loading...</p>}
