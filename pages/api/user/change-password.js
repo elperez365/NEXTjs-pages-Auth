@@ -1,13 +1,13 @@
-import { getSession } from "next-auth/client";
 import { connectToDatabase } from "../../../lib/db";
 import { hashPassword, verifyPassword } from "../../../lib/auth";
 
 export default async function handler(req, res) {
-  const session = await getSession({ req: req });
+  const session = req.body.session;
   if (!session) {
     res.status(401).json({ message: "Not authenticated!" });
     return;
   }
+
   switch (req.method) {
     case "PATCH":
       const userEmail = session.user.email;
@@ -29,7 +29,7 @@ export default async function handler(req, res) {
         currentPassword
       );
       if (!checkOldPassword) {
-        res.status(403).json({ message: "Could not authenticate user." });
+        res.status(403).json({ message: "check old password!!" });
         client.close();
         return;
       }

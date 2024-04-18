@@ -8,7 +8,22 @@ function UserProfile() {
   if (status === "loading") {
     return <p className={classes.profile}>Loading...</p>;
   }
-  console.log(session);
+
+  async function changePasswordHandler(passwordData) {
+    const { oldPassword, newPassword } = passwordData;
+
+    const response = await fetch("/api/user/change-password", {
+      method: "PATCH",
+      body: JSON.stringify({ oldPassword, newPassword, session }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+
+    console.log(data);
+  }
 
   return (
     <>
@@ -16,7 +31,7 @@ function UserProfile() {
       {session && (
         <section className={classes.profile}>
           <h1>Your User Profile</h1>
-          <ProfileForm />
+          <ProfileForm onChangePassword={changePasswordHandler} />
         </section>
       )}
     </>
